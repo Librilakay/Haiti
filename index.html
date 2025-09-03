@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><img - Mon Site</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif;}
+
+    body{
+      color:#333;
+      line-height:1.6;
+    }
+
+    /* Navbar */
+    nav{
+      position: fixed;
+      top:0;
+      left:0;
+      width:100%;
+      background: rgba(0,0,0,0.7);
+      padding:15px 30px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      z-index:10;
+    }
+    nav .logo{
+      color:white;
+      font-size:1.5rem;
+      font-weight:bold;
+      text-decoration:none;
+    }
+    nav ul{
+      list-style:none;
+      display:flex;
+      gap:30px;
+      text-align: center;
+      padding-right: 100px;
+    }
+    nav ul li a{
+      color:white;
+      text-decoration:none;
+      font-size:1rem;
+      transition:0.3s;
+      text-align: center;
+      gap: 90px;
+    }
+    nav ul li a:hover{
+      color:black;
+    }
+
+    /* En-tête */
+    header{
+      background: url('IMG_0279.jpeg') no-repeat center center/cover;
+      height: 90vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align:center;
+      color: white;
+      position: relative;
+    }
+    header::after{
+      content:'';
+      position:absolute;
+      top:0;left:0;right:0;bottom:0;
+      background:rgba(0,0,0,0.5);
+    }
+    header .content{
+      position: relative;
+      z-index:1;
+      
+    }
+    header h1{
+      font-size:3rem;
+      margin-bottom:15px;
+    }
+    header p{
+      font-size:16px;
+    }
+    header a.btn{
+      display:inline-block;
+      margin-top:20px;
+      padding:12px 25px;
+      background:#FDBE02;
+      color:white;
+      text-decoration:none;
+      border-radius:5px;
+      font-weight:bold;
+      transition:0.3s;
+      border: 4px solid black
+    }
+    header a.btn:hover{
+      background:#e65c00;
+    }
+    .gagnant{
+      text-align: center;
+      margin-top: 100px;
+      font-size: 18px
+    }
+
+    /* Contact */
+    .contact{
+      background:#f4f4f4;
+      padding:80px 20px;
+    }
+    .contact h2{
+      text-align:center;
+      margin-bottom:30px;
+    }
+    
+    .contact form{
+      max-width:600px;
+      margin:0 auto;
+      display:flex;
+      flex-direction:column;
+    }
+    .contact input, .contact textarea{
+      padding:12px;
+      margin-bottom:15px;
+      border:1px solid #ccc;
+      border-radius:5px;
+      font-size:1rem;
+    }
+    .contact button{
+      padding:12px;
+      border:none;
+      background:#FDBE02;
+      color:white;
+      border-radius:5px;
+      font-size:1.1rem;
+      cursor:pointer;
+      transition:0.3s;
+      border: 4px solid black;
+    }
+    .contact button:hover{
+      background:#;
+    }
+    .note {
+      font-size:20px;
+      text-align: center;
+      
+      
+     }
+    .note a{
+      color: white;
+      border: 4px solid black;
+      background:#FDBE02;
+    }
+    
+
+    footer{
+      background:#222;
+      color:white;
+      text-align:center;
+      padding:15px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <a href="index.html" class="logo"></a>
+    <ul>
+      <li><a href="#Accueil">Accueil</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- En-tête -->
+  <header>
+  <section class="Accueil" id="Accueil">
+    <div class="content">
+      <h1>Bienvenue sur LIBRILAKAY</h1>
+      <p> Bienvenue dans votre boutique scolaire en ligne📚
+Livres originaux, fournitures et art. d'impressions✏️🖨️
+Tout ce qu’il vous faut, livré chez vous.
+<strong>LIVRAISON GRATUITE</strong>(infos sur livraison et les produits en bas de la page)🚚
+</p>
+      <a href="contact.html" class="btn">Voir nos produits</a>
+    </div>
+  </header>
+
+   <div class="gagnant">
+   <p><strong>Code du gagnant</strong>:------</p>
+   </div>
+   
+    <!-- Contact -->
+  <section class="contact" id="contact">
+    <h2>Contactez-nous</h2>
+    <form action="mailto:librilakay@gmail.com" method="POST" enctype="text/plain">
+      <input type="text" name="Nom" placeholder="Votre Prenom" required>
+      <textarea name="Message" rows="5" placeholder="Objet(commentaires, questions, suggestions, requête produits...)" required></textarea>
+      <button type="submit">Envoyer</button>
+    </form>
+  </section>
+   <div class="note">
+  <strong> <a href="about.html">Infos livraison et les produits</a></strong>
+   </div>
+
+  <footer>
+    <p>&copy; 2025 - LIBRILAKAY| Tous droits réservés</p><p> • contact-us:+50938658113</p>
+  </footer>
+
+</body>
+</html>

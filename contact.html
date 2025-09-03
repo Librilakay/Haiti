@@ -1,0 +1,724 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>LIBRILAKAY</title>
+<style>
+:root{
+  --accent:#c59b00;
+  --bg:#f4f4f6;
+  --card:#ffffff;
+  --muted:#666;
+  --max-width:1200px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:"Segoe UI",Roboto,Arial,sans-serif;
+  background:var(--bg);
+  color:#111;
+}
+header.topbar{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.15)), url('IMG_0279.jpeg') center/cover no-repeat;
+  color:white;
+  padding:18px 16px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.brand img{width:56px;height:56px;border-radius:8px;object-fit:cover;border:2px solid rgba(255,255,255,0.12)}
+.brand h1{font-size:20px;margin:0;color:#FDBE02}
+.search{
+  margin-left:24px;
+  flex:1;
+}
+.search input{
+  width:100%;
+  padding:10px 12px;
+  border-radius:8px;
+  border:0;
+  outline:0;
+  font-size:14px;
+}
+.cart-btn{
+  margin-left:auto;
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+.cart-icon{
+  background:rgba(255,255,255,0.12);
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+  display:flex;
+  gap:8px;
+  align-items:center;
+  color:white;
+}
+.cart-count{
+  background:var(--accent);
+  color:#fff;
+  padding:4px 8px;
+  border-radius:999px;
+  font-weight:700;
+  font-size:13px;
+}
+.container{
+  max-width:var(--max-width);
+  margin:22px auto;
+  padding:0 12px 80px;
+}
+.container a{
+ font-size: 18px;
+ color: black;
+ 
+}
+.container button{
+  background: var(--accent);
+  color:#fff;
+   border: 4px solid black
+}
+.container p{
+  font-size: 10px;
+  
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:18px;
+}
+.card{
+  background:var(--card);
+  border-radius:-10px;
+  padding:10px;
+  box-shadow:0 1px 6px rgba(0,0,0,0.06);
+  display: inline-block;
+  flex-direction:column;
+  gap:8px;
+  min-height:270px;
+}
+.card img{width:100%;height:250px;object-fit:cover;border-radius:-1px}
+.card h3{margin:0;font-size:16px}
+.price{font-weight:800;color:var(--accent);font-size:15px}
+.small{font-size:13px;color:var(--muted)}
+.btn{
+  padding:8px 10px;border-radius:8px;border:0;background:var(--accent);color:white;cursor:pointer;font-weight:700
+}
+.btn.ghost{background:transparent;border:1px solid #eee;color:#333;font-weight:600}
+.actions{margin-top:auto;display:flex;gap:8px}
+
+/* Panier */
+.cart-overlay{
+  position:fixed;
+  left:0;right:0;
+  top:72px;
+  margin:auto;
+  max-width:980px;
+  transform:translateY(-10px);
+  transition:all .18s ease;
+  opacity:0;
+  pointer-events:none;
+}
+.cart-overlay.open{
+  opacity:1;
+  pointer-events:auto;
+  transform:translateY(0);
+}
+.cart-panel{
+  background:rgba(255,255,255,0.98);
+  border-radius:10px;
+  box-shadow:0 8px 30px rgba(0,0,0,0.12);
+  overflow:hidden;
+}
+.cart-header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #eee}
+.cart-list{max-height:360px;overflow:auto;padding:12px 16px;display:flex;flex-direction:column;gap:10px}
+.cart-item{display:flex;gap:12px;align-items:center}
+.cart-item img{width:72px;height:72px;object-fit:cover;border-radius:8px}
+.cart-item .meta{flex:1}
+.cart-footer{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:12px 16px;border-top:1px solid #eee}
+#closeCartBtn{background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:6px;font-weight:600;cursor:pointer}
+#closeCartBtn:hover{background:#b58800}
+
+/* Modal paiement */
+.modal-backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;z-index:2000;
+}
+.modal-backdrop.open{display:flex}
+.modal{
+  width:100%;max-width:680px;background:white;border-radius:10px;padding:18px;box-shadow:0 12px 40px rgba(0,0,0,0.2)
+}
+label{display:block;margin:8px 0 6px;font-weight:600;font-size:13px}
+input[type="text"], input[type="tel"], input[type="email"], textarea, select{
+  width:100%;padding:10px;border-radius:8px;border:1px solid #ddd;font-size:14px;
+}
+.row{display:flex;gap:10px;}
+.col{flex:1}
+.small-muted{font-size:13px;color:var(--muted)}
+.file-drop{
+  border:2px dashed #ddd;padding:12px;border-radius:8px;text-align:center;color:var(--muted)
+}
+.note{font-size:13px;color:var(--muted);margin-top:8px}
+
+@media(max-width:700px){
+  header.topbar{flex-wrap:wrap;padding:12px}
+  .brand h1{font-size:16px}
+  .cart-overlay{left:8px;right:8px;top:120px}
+}
+</style>
+</head>
+<body>
+<header class="topbar" role="banner">
+  <div class="brand">
+    <img src="IMG_0282.jpeg" alt="logo">
+    <div>
+      <h1>LIBRILAKAY</h1>
+      <div class="small-muted">Paiement manuel (MonCash / NatCash)</div>
+    </div>
+  </div>
+  <div class="search">
+    <input id="searchInput" placeholder="Rechercher par nom de produit..." />
+  </div>
+  <div class="cart-btn">
+    <div style="color:white;font-size:13px">Mon panier</div>
+    <div class="cart-icon" id="openCartBtn" title="Ouvrir le panier">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="filter:drop-shadow(0 1px 0 rgba(0,0,0,0.2))">
+        <path d="M3 3h2l.4 2M7 13h10l4-8H5.4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="10.5" cy="20.5" r="1.5" fill="white"/>
+        <circle cx="18.5" cy="20.5" r="1.5" fill="white"/>
+      </svg>
+      <div class="cart-count" id="cartCount">0</div>
+    </div>
+  </div>
+</header>
+
+<!-- Panier -->
+<div class="cart-overlay" id="cartOverlay" aria-hidden="true">
+  <div class="cart-panel">
+    <div class="cart-header">
+      <div style="display:flex;gap:12px;align-items:center">
+        <strong>Panier</strong>
+        <div class="small-muted" id="cartTotalItems">0 articles</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn ghost" id="closeCartBtn">Fermer</button>
+      </div>
+    </div>
+    <div class="cart-list" id="cartList"></div>
+    <div class="cart-footer">
+      <div>
+        <div class="small-muted">Total estimé</div>
+        <div style="font-weight:800;font-size:18px;color:var(--accent)" id="cartTotal">HTG 0</div>
+      </div>
+      <div>
+        <button class="btn ghost" id="emptyCartBtn">Vider</button>
+        <button class="btn" id="checkoutBtn">PAYER</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal paiement -->
+<div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true">
+    <h2>Fiche de Paiement</h2>
+    <p class="small-muted">Choisissez la méthode, Effectuer le paiement, uploadez la preuve, entrez vos infos et validez.</p>
+
+    <label>Méthode de paiement</label>
+    <select id="paymentMethod">
+      <option value="moncash">MonCash</option>
+      <option value="natcash">NatCash</option>
+    </select>
+
+    <div id="merchantInfo" style="margin-top:9px">
+      <div class="small-muted">Numéro MonCash : <strong id="merchantMonCash">509-XXXXXvX</strong></div>
+      <div class="small-muted">Numéro  Nat-Cash : <strong id="merchantNatCash">509-xxxxxx</strong></div>
+      <div class="small-muted"> Effectuer le paiement dans l'une de ces deux numéros soit sur le (*202#) ou (sur les apps moncash/natcash).</div>
+       </div>
+
+    <hr />
+    <label>Preuve de paiement {(capture d'ecran du transfert)}</label>
+    <div class="file-drop" id="fileDrop">
+      <input type="file" id="proofFile" accept="image/*" style="display:none">
+      <div id="fileDropText">Clique ou glisse le fichier ici</div>
+      <div id="filePreview" style="margin-top:8px"></div>
+    </div>
+
+    <hr />
+    <label>Informations de livraison</label>
+    <input id="buyerName" placeholder="Nom complet(moncash/natcash)" />
+    <div class="row" style="margin-top:8px">
+      <div class="col"><input id="buyerPhone" placeholder="Téléphone(moncash/natcash)" /></div>
+      <div class="col"><input id="buyerEmail" placeholder="Email obligatoire (confirmpayment)" /></div>
+    </div>
+    <label style="margin-top:8px">Adresse complète(français/kreyol)</label>
+    <textarea id="buyerAddress" rows="3" placeholder="Rue, commune, ville, reference(a cote de, en face de, nom,....), numéro maison, couleur,etc."></textarea>
+
+    <div style="display:flex;gap:80px;justify-content:flex-end;margin-top:12px; ;">
+      <button class="btn ghost" id="cancelPayment">Annuler</button>
+      <button class="btn" id="confirmPayment">Valider</button>
+    </div>
+    <div class="note" style="margin-top:10px; font-size:20px; color: black;" >
+      <strong> </strong>
+    </div>
+  </div>
+</div>
+
+<main class="container" role="main">
+  <h2 style="margin:0 0 12px">Produits</h2>
+  <p><strong>*LIVRAISON GRATUITE POUR LES ZONES INDIQUÉES📦</strong></p>
+  <button><a href="index.html">👈Accueil</a></button>
+  <div class="grid" id="productsGrid"></div>
+</main>
+
+<script>
+/* ==========
+   CONFIG PERSO (à remplir)
+   ========== */
+const MONCASH_NUMBER = '+509-38658113';   // <-- Remplace par ton numéro MonCash
+const NATCASH_NUMBER = '+509-55606961';   // <-- Remplace par ton numéro NatCash
+const EMAILJS_CONFIG = {
+  PUBLIC_KEY :'LuCMtLcuMA-v1cI4o',       // <-- EmailJS Public Key
+  SERVICE_ID: 'service_5hrju31',        // <-- EmailJS Service ID
+  TEMPLATE_ID:'template_7ozdz2p'        // <-- EmailJS Template ID
+};
+
+/* ==========
+   Données produits (manuels, un par ligne)
+   ========== */
+const PRODUCTS = [
+  {id:'p00', name: 'Tirage kit scolaire complet.   .Fin :26 septembre 2025', price:250, desc:'Sac à dos, trousse,  3 de vos livres, cahier, plumes, aiguisoir, bloc notes, marqueurs, surligneurs, instruments de geometrie, calculatrice, etc.', img:'IMG_0278.png'},
+  {id:'p01', name:'Loupe(round magnifier)X2',        price:1600,  desc:'✅', img:'IMG_0327.jpeg'},
+  {id:'p02', name:'Glue stick(x6)',      price:800,  desc:'✅',   img:'IMG_0326.gif'},
+  {id:'p03', name:'Conquerant classique (96pages 17*22cm)X3',       price:1750,  desc:'✅',     img:'IMG_0341.jpeg'},
+  {id:'p04', name:'boite liquide paper(x12)',          price:2050,  desc:'✅',        img:'IMG_0330.webp'},
+  {id:'p05', name:'cra-Z-art 24 crayons',        price:800,  desc:'✅',       img:'IMG_0328.webp'},
+  {id:'p06', name:'Dictionnaire Larousse Français',    price:1550, desc:'✅',  img: 'IMG_0329.jpeg'},
+  {id: 'p07', name:'Dictionnaire de l´ecolier haïtien ', price: 1950, desc:'✅', img:'IMG_0331.jpeg'},
+  {id: 'p08', name:'Machine brother DCP-7065-DN', price:137000, desc:'✅(contactez-nous avant)', img:'IMG_0363.webp'},
+  {id:'p09', name:'Les marrons de la liberté(Jean Fouchard)', price: 6100, desc:'✅', img:'IMG_0393.jpeg'},
+  {id: 'p010', name:'Agrafeuse', price:1300, desc:'✅', img:'IMG_0339.jpeg'},
+{id: 'p011', name:'La republique d’Haiti et la republique dominicaine(Jean price Mars)Tome I et II', price:7600, desc:'✅', img:'IMG_0351.jpeg'},
+{id: 'p012', name:'Séna(Fernand Hibbert)', price:1950, desc:'✅', img:'IMG_0350.jpeg'},
+{id: 'p013', name:'conquerant classique(96pages 17*22cm)X3', price:1300, desc:'✅', img:'IMG_0340.jpeg'},
+{id: 'p014', name:'tube d’encre fil', price:8900, desc:'✅', img:'IMG_0364.jpeg'},
+{id: 'p015', name:'vive les maths 6', price:2490, desc:'✅', img:'IMG_0353.jpeg'},
+{id: 'p016', name:'vive les maths 4', price:2250, desc:'✅', img:'IMG_0354.jpeg'},
+{id: 'p017', name:'vive les maths 2', price:2250, desc:'✅', img:'IMG_0355.jpeg'},
+{id: 'p018', name:'Français en fête 4', price:2750, desc:'✅', img:'IMG_0352.jpeg'},
+{id: 'p019', name:'Les thazar(Fernand Hibbert)', price:1850, desc:'✅', img:'IMG_0349.jpeg'},
+{id: 'p020', name:'Les simulacres(Fernand Hibbert)', price:1750, desc:'✅', img:'IMG_0344.jpeg'},
+{id: 'p021', name:'Introduction en Criminologie(Jean Elifaite Gué)', price:2000, desc:'✅', img:'IMG_0375.jpeg'},
+{id: 'p022', name:'A la rencontre de la Grammaire 1 ', price:2000, desc:'✅', img:'IMG_0347.webp'},
+{id: 'p023', name:'A la rencontre de la Grammaire 2 ', price:2100, desc:'✅', img:'IMG_0348.webp'},
+{id: 'p024', name:'A la rencontre de la Grammaire 3 ', price:2500, desc:'✅', img:'IMG_0346.jpeg'},
+{id: 'p025', name:'Moi et les autres', price:900, desc:'✅', img:'IMG_0365.jpeg'},
+{id: 'p026', name:'Moi, Mes droits et mes devoirs', price:1000, desc:'✅', img:'IMG_0368.jpeg'},
+{id: 'p027', name:'Nous les enfants d‘aujourd´hui', price:1000, desc:'✅', img:'IMG_0366.jpeg'},
+{id: 'p028', name:'Geographie 7eme Année(Françoise L. péan)', price:1750, desc:'✅', img:'IMG_0369.jpeg'},
+{id: 'p029', name:'Les dix Hommes noirs(Etzer Vilaire)', price:1850, desc:'✅', img:'IMG_0370.jpeg'},
+{id: 'p030', name:'La clé des mots', price:3200, desc:'✅', img:'IMG_0371.jpeg'},
+{id: 'p031', name:'Mon livre de Geographie 1', price:1900, desc:'✅', img:'IMG_0373.jpeg'},
+{id: 'p032', name:'Mon livre de Geographie 2', price:2450, desc:'✅', img:'IMG_0374.jpeg'},
+{id: 'p033', name:'Moi et mon pays', price:1000, desc:'✅', img:'IMG_0367.jpeg'},
+{id: 'p034', name:'Nous les citoyens de demain', price:1350, desc:'✅', img:'IMG_0372.jpeg'},
+
+{id: 'p035', name:'Rouleau master type Fil(court)', price:11560, desc:'✅', img:''},
+{id: 'p036', name:'Rouleau master type Fil(long)', price:13600, desc:'✅', img:''},
+{id: 'p037', name:'Tube encre KS', price:5500, desc:'✅', img:'IMG_0376.jpeg'},
+{id: 'p038', name:'Rouleau master Ks', price:7752, desc:'✅', img:'IMG_0377.jpeg'},
+{id: 'p039', name:'Tube encre CZ', price:5500, desc:'✅', img:'IMG_0378.jpeg'},
+{id: 'p040', name:'Rouleau master CZ', price:8600, desc:'✅', img:'IMG_0379.jpeg'},
+{id: 'p041', name:'Tube encre Rp', price:6120, desc:'✅', img:'IMG_0380.webp'},
+{id: 'p042', name:'Rouleau master Rp', price:8840, desc:'✅', img:'IMG_0381.jpeg'},
+{id: 'p043', name:'Tube encre Gr', price:8200, desc:'✅', img:'IMG_0396.webp'},
+{id: 'p044', name:'Rouleau master Gr', price:11560, desc:'✅', img:'IMG_0382.jpeg'},
+{id: 'p045', name:'Tube encre brother TN-650', price:25840, desc:'✅', img:'IMG_0383.jpeg'},
+{id: 'p046', name:'Tube encre brother TN-620', price:21760, desc:'✅', img:'IMG_0384.jpeg'},
+{id: 'p047', name:'Tube encre brother TN-330', price:19100, desc:'✅', img:'IMG_0385.jpeg'},
+{id: 'p048', name:'Tube encre brother TN-315 ou 310(couleur)', price:19100, desc:'✅', img:'IMG_0386.jpeg'},
+{id: 'p049', name:'Tube encre brother TN-315 ou 310(Noir)', price:18000, desc:'✅', img:'IMG_0386.jpeg'},
+{id: 'p050', name:'Encre seau Brother', price:5500, desc:'✅', img:'IMG_0441.jpeg'},
+{id: 'p051', name:'Tube encre Brother', price:5500, desc:'✅', img:'IMG_0387.webp'},
+{id: 'p052', name:'Sceau(moyen)', price:6800, desc:'✅', img:'IMG_0397.jpeg'},
+{id: 'p053', name:'Machine Brother DCP-8080 DN', price:217600, desc:'✅(contactez-nous avant)', img:'IMG_0388.jpeg'},
+{id: 'p054', name:'Machine brother DCP-8085 DN', price:217600, desc:'✅(contactez-nous avant)', img:'IMG_0389.jpeg'},
+{id: 'p055', name:'Machine brother MFC-j450-DW', price:68000, desc:'✅(contactez-nous avant)', img:'IMG_0390.jpeg'},
+{id: 'p056', name:'Tube encre ricoh(couleur)', price:11560, desc:'✅', img:'IMG_0391.jpeg'},
+{id: 'p057', name:'Tube encre brother LCIOIM(couleur)', price:5500, desc:'✅', img:'IMG_0392.jpeg'},
+{id:'p058', name:'le monde et son passé I', price:1900, desc:'✅', img:'IMG_0394.jpeg'},
+{id:'p059', name:'Histoire d´haiti tome I(Jean Fouchard)', price:4500, desc:'✅', img:'IMG_0395.jpeg'},
+
+];
+
+
+let CART = {};
+/* ==========
+   Raccourcis DOM
+   ========== */
+const productsGrid   = document.getElementById('productsGrid');
+const searchInput    = document.getElementById('searchInput');
+const cartCountEl    = document.getElementById('cartCount');
+const cartOverlay    = document.getElementById('cartOverlay');
+const openCartBtn    = document.getElementById('openCartBtn');
+const closeCartBtn   = document.getElementById('closeCartBtn');
+const cartListEl     = document.getElementById('cartList');
+const cartTotalEl    = document.getElementById('cartTotal');
+const cartTotalItemsEl = document.getElementById('cartTotalItems');
+const emptyCartBtn   = document.getElementById('emptyCartBtn');
+const checkoutBtn    = document.getElementById('checkoutBtn');
+const modalBackdrop  = document.getElementById('modalBackdrop');
+
+const paymentMethod  = document.getElementById('paymentMethod');
+const merchantMonCash = document.getElementById('merchantMonCash');
+const merchantNatCash = document.getElementById('merchantNatCash');
+
+const confirmBtn     = document.getElementById('confirmPayment');
+const cancelPayment  = document.getElementById('cancelPayment');
+const proofFileInput = document.getElementById('proofFile');
+const fileDrop       = document.getElementById('fileDrop');
+const fileDropText   = document.getElementById('fileDropText');
+const filePreview    = document.getElementById('filePreview');
+
+const buyerName      = document.getElementById('buyerName');
+const buyerPhone     = document.getElementById('buyerPhone');
+const buyerEmail     = document.getElementById('buyerEmail');
+const buyerAddress   = document.getElementById('buyerAddress');
+
+/* ==========
+   Helpers
+   ========== */
+function formatHTG(n){ return 'HTG '+Number(n).toLocaleString('fr-HT'); }
+
+/* ==========
+   Init numéros marchands
+   ========== */
+merchantMonCash.textContent = MONCASH_NUMBER;
+merchantNatCash.textContent = NATCASH_NUMBER;
+
+/* ==========
+   Affichage produits
+   ========== */
+function renderProducts(list){
+  productsGrid.innerHTML='';
+  list.forEach(p=>{
+    const card=document.createElement('div');
+    card.className='card';
+    card.innerHTML=`
+      <img src="${p.img}" alt="${p.name}">
+      <h3>${p.name}</h3>
+      <div class="small">${p.desc}</div>
+      <div class="price">${formatHTG(p.price)}</div>
+      <div class="actions">
+        <button class="btn" data-add="${p.id}">Ajouter</button>
+      </div>`;
+    productsGrid.appendChild(card);
+  });
+}
+renderProducts(PRODUCTS);
+
+/* ==========
+   Recherche
+   ========== */
+searchInput.addEventListener('input',e=>{
+  const q=e.target.value.trim().toLowerCase();
+  const filtered=PRODUCTS.filter(p=>p.name.toLowerCase().includes(q));
+  renderProducts(filtered);
+});
+
+/* ==========
+   Ajouter au panier
+   ========== */
+productsGrid.addEventListener('click',e=>{
+  const add=e.target.getAttribute('data-add');
+  if(add){ CART[add]=(CART[add]||0)+1; updateCartUI(); }
+});
+
+/* ==========
+   Panier UI
+   ========== */
+function updateCartUI(){
+  const totalItems=Object.values(CART).reduce((a,b)=>a+b,0);
+  cartCountEl.textContent=totalItems;
+  cartTotalItemsEl.textContent=`${totalItems} article${totalItems>1?'s':''}`;
+
+  cartListEl.innerHTML='';
+  let total=0;
+
+  for(const pid in CART){
+    const qty=CART[pid];
+    const p=PRODUCTS.find(x=>x.id===pid);
+    if(!p) continue;
+    total += p.price*qty;
+
+    const item=document.createElement('div');
+    item.className='cart-item';
+    item.innerHTML=`
+      <img src="${p.img}" alt="${p.name}">
+      <div class="meta">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-weight:700">${p.name}</div>
+            <div class="small-muted">Prix: ${formatHTG(p.price)}</div>
+          </div>
+          <div style="text-align:right">
+            <div class="small-muted">Qté</div>
+            <div style="display:flex;gap:4px;align-items:center">
+              <button class="btn ghost" data-decrease="${pid}">-</button>
+              <span>${qty}</span>
+              <button class="btn ghost" data-increase="${pid}">+</button>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn ghost" data-remove="${pid}">Retirer</button>
+        </div>
+      </div>`;
+    cartListEl.appendChild(item);
+  }
+  cartTotalEl.textContent = formatHTG(total);
+}
+cartListEl.addEventListener('click',e=>{
+  const pidRemove=e.target.getAttribute('data-remove');
+  if(pidRemove){ delete CART[pidRemove]; updateCartUI(); }
+  const pidInc=e.target.getAttribute('data-increase');
+  if(pidInc){ CART[pidInc]+=0; updateCartUI(); }
+  const pidDec=e.target.getAttribute('data-decrease');
+  if(pidDec){ CART[pidDec]-=0; if(CART[pidDec]<=0) delete CART[pidDec]; updateCartUI(); }
+});
+emptyCartBtn.addEventListener('click',()=>{ CART={}; updateCartUI(); });
+
+openCartBtn.addEventListener('click',()=>cartOverlay.classList.add('open'));
+closeCartBtn.addEventListener('click',()=>cartOverlay.classList.remove('open'));
+checkoutBtn.addEventListener('click',()=>modalBackdrop.classList.add('open'));
+cancelPayment.addEventListener('click',()=>modalBackdrop.classList.remove('open'));
+
+/* ==========
+   Preuve: clic & preview nom
+   ========== */
+fileDrop.addEventListener('click',()=>proofFileInput.click());
+proofFileInput.addEventListener('change',()=>{
+  const f = proofFileInput.files[0];
+  fileDropText.textContent = f ? f.name : 'Clique ou glisse le fichier ici';
+  filePreview.innerHTML = '';
+  if(f){
+    const reader = new FileReader();
+    reader.onload = (e)=>{
+      const img = new Image();
+      img.onload = ()=>{
+        // Miniature pour aperçu
+        const c = document.createElement('canvas');
+        const ctx = c.getContext('2d');
+        const maxW = 240;
+        const scale = Math.min(1, maxW / img.width);
+        c.width = Math.round(img.width * scale);
+        c.height = Math.round(img.height * scale);
+        ctx.drawImage(img,0,0,c.width,c.height);
+        const dataURL = c.toDataURL('image/jpeg',0.7);
+        const preview = new Image();
+        preview.src = dataURL;
+        preview.alt = 'Miniature preuve';
+        preview.style.maxWidth = '160px';
+        preview.style.borderRadius = '6px';
+        preview.style.boxShadow = '0 1px 4px rgba(0,0,0,0.15)';
+        filePreview.appendChild(preview);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(f);
+  }
+});
+
+/* ==========
+   Construire liste produits + total (pour l’email)
+   ========== */
+function buildOrderSummary(){
+  let lines = [];
+  let total = 0;
+  for(const pid in CART){
+    const qty = CART[pid];
+    const p = PRODUCTS.find(x=>x.id===pid);
+    if(!p) continue;
+    const lineTotal = p.price * qty;
+    total += lineTotal;
+    lines.push(`${p.name} x ${qty} — ${formatHTG(lineTotal)}`);
+  }
+  return {
+    text: lines.join('\n'),
+    total
+  };
+}
+
+/* ==========
+   Compresser image en base64 (miniature < ~50KB)
+   ========== */
+function makeThumbnailBase64(file, cb){
+  const reader = new FileReader();
+  reader.onload = (e)=>{
+    const img = new Image();
+    img.onload = ()=>{
+      let maxW = 220;   // largeur de base
+      let quality = 0.7;
+      let dataURL = '';
+
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+
+      function render(){
+        const scale = Math.min(1, maxW / img.width);
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.drawImage(img,0,0,canvas.width,canvas.height);
+        dataURL = canvas.toDataURL('image/jpeg', quality);
+      }
+
+      // Première passe
+      render();
+
+      // Si trop gros, on réduit progressivement
+      // (approx: taille en chars ~ taille en bytes*1.37 ; on vise < ~60k chars)
+      while(dataURL.length > 60000 && (maxW > 120 || quality > 0.5)){
+        if(maxW > 120) maxW -= 20;
+        if(quality > 0.5) quality -= 0.05;
+        render();
+      }
+      cb(dataURL);
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ==========
+   Envoi EmailJS (AJOUTE TOTAL + IMAGE MINIATURE)
+   ========== */
+confirmBtn.addEventListener('click',()=>{
+  // Vérifs
+  if(!buyerName.value.trim() || !buyerPhone.value.trim() || !buyerAddress.value.trim()){
+    alert('Veuillez remplir toutes les informations de livraison.');
+    return;
+  }
+  const file = proofFileInput.files[0];
+  if(!file){ alert('Veuillez télécharger la preuve de paiement.'); return; }
+
+  // Construire produits + total
+  const { text:productsList, total } = buildOrderSummary();
+  if(!productsList){
+    alert('Votre panier est vide.');
+    return;
+  }
+
+  // Miniature base64
+  makeThumbnailBase64(file, (thumbBase64)=>{
+    const templateParams = {
+      buyer_name:    buyerName.value,
+      buyer_phone:   buyerPhone.value,
+      buyer_email:   buyerEmail.value || '(non fourni)',
+      buyer_address: buyerAddress.value,
+      payment_method: paymentMethod.value.toUpperCase(),
+      products_list: productsList,
+      total_price:   formatHTG(total),
+      proof_image:   thumbBase64
+    };
+
+    // Envoi
+    emailjs.send(EMAILJS_CONFIG.SERVICE_ID, EMAILJS_CONFIG.TEMPLATE_ID, templateParams)
+      .then(()=>{
+        alert('Commande envoyée !');
+        CART = {};
+        updateCartUI();
+        modalBackdrop.classList.remove('open');
+        // Reset champ fichier
+        proofFileInput.value = '';
+        fileDropText.textContent = 'Clique ou glisse le fichier ici';
+        filePreview.innerHTML = '';
+      })
+      .catch(err=>{
+        console.error('Erreur lors de l’envoi :', err);
+        alert('Erreur lors de l’envoi. Vérifie la console et tes identifiants EmailJS.');
+      });
+  });
+});
+</script>
+
+<!-- EmailJS SDK (NE PAS METTRE DANS <head>) -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  // Init SDK avec ta Public Key
+  emailjs.init({ publicKey: EMAILJS_CONFIG.PUBLIC_KEY });
+  // === Sauvegarde du panier avec localStorage ===
+
+// Charger le panier depuis localStorage au démarrage
+CART = JSON.parse(localStorage.getItem("CART")) || CART;
+updateCartUI();
+
+// Fonction pour sauvegarder le panier
+function saveCart() {
+  localStorage.setItem("CART", JSON.stringify(CART));
+}
+
+// Modifier updateCartUI pour sauvegarder automatiquement
+function updateCartUI() {
+  const totalItems = Object.values(CART).reduce((a, b) => a + b, 0);
+  cartCountEl.textContent = totalItems;
+  cartTotalItemsEl.textContent = `${totalItems} article${totalItems > 1 ? 's' : ''}`;
+  cartListEl.innerHTML = '';
+  let total = 0;
+  for (const pid in CART) {
+    const qty = CART[pid];
+    const p = PRODUCTS.find(x => x.id === pid);
+    if (!p) continue;
+    total += p.price * qty;
+    const item = document.createElement('div');
+    item.className = 'cart-item';
+    item.innerHTML = `
+      <img src="${p.img}" alt="${p.name}">
+      <div class="meta">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div><div style="font-weight:700">${p.name}</div><div class="small-muted">Prix: HTG ${p.price}</div></div>
+          <div style="text-align:right">
+            <div class="small-muted">Qté</div>
+            <div style="display:flex;gap:4px;align-items:center">
+              <button class="btn ghost" data-decrease="${pid}">-</button>
+              <span>${qty}</span>
+              <button class="btn ghost" data-increase="${pid}">+</button>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn ghost" data-remove="${pid}">Retirer</button>
+        </div>
+      </div>`;
+    cartListEl.appendChild(item);
+  }
+  cartTotalEl.textContent = 'HTG ' + total;
+
+  // Sauvegarder le panier après chaque mise à jour
+  saveCart();
+}
+
+// Modifier aussi les actions sur le panier pour sauvegarder après changements
+cartListEl.addEventListener('click', e => {
+  const pidRemove = e.target.getAttribute('data-remove');
+  if (pidRemove) { delete CART[pidRemove]; updateCartUI(); }
+  const pidInc = e.target.getAttribute('data-increase');
+  if (pidInc) { CART[pidInc] += 1; updateCartUI(); }
+  const pidDec = e.target.getAttribute('data-decrease');
+  if (pidDec) { CART[pidDec] -= 1; if (CART[pidDec] <= 0) delete CART[pidDec]; updateCartUI(); }
+});
+
+emptyCartBtn.addEventListener('click', () => { CART = {}; updateCartUI(); });
+</script>
+</body>
+</html>
