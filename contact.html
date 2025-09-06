@@ -166,7 +166,7 @@ input[type="text"], input[type="tel"], input[type="email"], textarea, select{
 .col{flex:1}
 .small-muted{font-size:13px;color:var(--muted)}
 .file-drop{
-  border:2px dashed #ddd;padding:12px;border-radius:8px;text-align:center;color:var(--muted)
+  border:2px dashed #ddd;padding:7px;border-radius:8px;text-align:center;color:var(--muted)
 }
 .note{font-size:13px;color:var(--muted);margin-top:8px}
 
@@ -240,7 +240,7 @@ input[type="text"], input[type="tel"], input[type="email"], textarea, select{
       <option value="natcash">NatCash</option>
     </select>
 
-    <div id="merchantInfo" style="margin-top:9px">
+    <div id="merchantInfo" style="margin-top:7px">
       <div class="small-muted">Numéro MonCash : <strong id="merchantMonCash">509-XXXXXvX</strong></div>
       <div class="small-muted">Numéro  Nat-Cash : <strong id="merchantNatCash">509-xxxxxx</strong></div>
       <div class="small-muted"> Effectuer le paiement dans l'une de ces deux numéros soit sur le (*202#) ou (sur les apps moncash/natcash).</div>
@@ -264,7 +264,7 @@ input[type="text"], input[type="tel"], input[type="email"], textarea, select{
     <label style="margin-top:8px">Adresse complète(français/kreyol)</label>
     <textarea id="buyerAddress" rows="3" placeholder="Rue, commune, ville, reference(a cote de, en face de, nom,....), numéro maison, couleur,etc."></textarea>
 
-    <div style="display:flex;gap:80px;justify-content:flex-end;margin-top:12px; ;">
+    <div style="display:flex;gap:80px;justify-content:flex-end;margin-top:12px;">
       <button class="btn ghost" id="cancelPayment">Annuler</button>
       <button class="btn" id="confirmPayment">Valider</button>
     </div>
@@ -528,7 +528,7 @@ proofFileInput.addEventListener('change',()=>{
         const preview = new Image();
         preview.src = dataURL;
         preview.alt = 'Miniature preuve';
-        preview.style.maxWidth = '160px';
+        preview.style.maxWidth = '50px';
         preview.style.borderRadius = '6px';
         preview.style.boxShadow = '0 1px 4px rgba(0,0,0,0.15)';
         filePreview.appendChild(preview);
